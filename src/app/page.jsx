@@ -21,10 +21,10 @@ export default function Home() {
 
   return (
     <div className="w-full h-screen flex items-center justify-center">
-      <main className="w-full max-w-[800px] h-fit flex flex-col gap-5 ">
+      <main className="w-full max-w-[800px] h-fit flex flex-col">
         {data?.comments?.map((comment, index) => {
           return (
-            <Comment comment={comment} key={index}/>
+            <Comment comment={comment} key={index} data={data}/>
           );
         })}
       </main>

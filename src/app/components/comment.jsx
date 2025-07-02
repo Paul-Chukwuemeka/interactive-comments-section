@@ -1,30 +1,38 @@
 import Image from "next/image";
-import { useState } from "react";
+import { use, useState } from "react";
 import { FaPlus, FaMinus, FaReply } from "react-icons/fa";
 import Reply from "./reply";
 
-const Comment = ({ comment }) => {
-  const [upvoted, setUpvoted] = useState([]);
-  const [downvoted, setDownvoted] = useState([]);
-
+const Comment = ({ comment, data }) => {
+  const [isUpvoted, setIsUpvoted] = useState(false);
+  const [isDownvoted, setIsDownvoted] = useState(false);
 
   return (
-    <div className=" h-fit w-full flex flex-col items-end">
+    <div className=" h-fit w-full flex flex-col items-end gap-3">
       <div className="flex items-center gap-3 bg-white p-4 rounded-md">
         <div className="flex flex-col h-30 px-4  items-center  justify-between rounded-lg bg-[#c3c4ef6f] p-2">
           <button
             className="text-md text-[#67727e]"
+            // disabled ={isUpvoted} alternative for checking if is upvoted is true on button click
             onClick={() => {
-              if (!downvoted.includes(comment.id)) {
-                if (!upvoted.includes(comment.id)) {
-                  setUpvoted([...upvoted, comment.id]);
-                  comment.score++;
-                }
-              } else {
-                setDownvoted(downvoted.filter((id) => id !== comment.id));
-                if (!upvoted.includes(comment.id)) {
-                  setUpvoted([...upvoted, comment.id]);
-                  comment.score += 2;
+              if (isUpvoted) return;
+              else {
+                if (isDownvoted) {
+                  setIsDownvoted(false);
+                  setIsUpvoted(true);
+                  data.comments.map((item) => {
+                    if (comment.id === item.id) {
+                      item.score += 2;
+                    }
+                    console.log(comment.score);
+                  });
+                } else {
+                  setIsUpvoted(true);
+                  data.comments.map((item) => {
+                    if (comment.id == item.id) {
+                      item.score += 1;
+                    }
+                  });
                 }
               }
             }}
@@ -32,22 +40,29 @@ const Comment = ({ comment }) => {
             <FaPlus />
           </button>
           <h1 className="text-xl text-[#5457b6] font-bold">{comment.score}</h1>
-          <button
-            className="text-md text-[#67727e]"
-            onClick={() => {
-              if (!upvoted.includes(comment.id)) {
-                if (!downvoted.includes(comment.id)) {
-                  setDownvoted([...downvoted, comment.id]);
-                  comment.score--;
-                }
-              } else {
-                setUpvoted(upvoted.filter((id) => id !== comment.id));
-                if (!downvoted.includes(comment.id)) {
-                  setDownvoted([...downvoted, comment.id]);
-                  comment.score -= 2;
+          <button className="text-md text-[#67727e]"
+          onClick={()=>{
+             if (isDownvoted) return;
+              else {
+                if (isUpvoted) {
+                  setIsDownvoted(true);
+                  setIsUpvoted(false);
+                  data.comments.map((item) => {
+                    if (comment.id === item.id) {
+                      item.score -= 2;
+                    }
+                  });
+                } else {
+                  setIsDownvoted(true);
+                  data.comments.map((item) => {
+                    if (comment.id == item.id) {
+                      item.score -= 1;
+                    }
+                  });
                 }
               }
-            }}
+          }}
+
           >
             <FaMinus />
           </button>
@@ -78,9 +93,12 @@ const Comment = ({ comment }) => {
           </h1>
         </div>
       </div>
-      {comment.replies.length > 0 && (
-        <Reply replies={comment.replies} />
-      )}
+      <div className="w-11/12 flex flex-col gap-3 border-l-2 border-gray-400 pl-4">
+        {comment.replies.length > 0 &&
+          comment.replies.map((reply, index) => {
+            return <Reply reply={reply} key={index} />;
+          })}
+      </div>
     </div>
   );
 };
