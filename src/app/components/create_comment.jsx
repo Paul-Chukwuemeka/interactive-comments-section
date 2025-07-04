@@ -21,7 +21,7 @@ const Create_Comment = ({ currentUser }) => {
   }, []);
 
   return (
-    <div className="flex bg-white mt-4 rounded-lg items-start p-4 gap-4">
+    <div className="flex w-full bg-white mt-4 rounded-lg items-start p-4 gap-4">
       {currentUser && (
         <Image
           src={currentUser.image.png}
@@ -35,7 +35,7 @@ const Create_Comment = ({ currentUser }) => {
         ref={textareaRef}
         type="text"
         placeholder="Add a comment..."
-        className="border p-2 flex-1 rounded-md focus:outline-none border-gray-300"
+        className="border p-2 flex-1 min-h-28 rounded-md focus:outline-none border-gray-300"
         style={{ overflow: "hidden" }}
         
       />

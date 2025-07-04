@@ -1,11 +1,13 @@
 import Image from "next/image";
 import { use, useState } from "react";
-import { FaPlus, FaMinus, FaReply } from "react-icons/fa";
+import { FaPlus, FaMinus, FaReply, FaTrash, FaPen } from "react-icons/fa";
 import Reply from "./reply";
+import Create_Comment from "./create_comment";
 
 const Comment = ({ comment, data }) => {
   const [isUpvoted, setIsUpvoted] = useState(false);
   const [isDownvoted, setIsDownvoted] = useState(false);
+  const [isReply, setIsReply] = useState(false);
 
   return (
     <div className=" h-fit w-full flex flex-col items-end gap-3">
@@ -40,9 +42,10 @@ const Comment = ({ comment, data }) => {
             <FaPlus />
           </button>
           <h1 className="text-xl text-[#5457b6] font-bold">{comment.score}</h1>
-          <button className="text-md text-[#67727e]"
-          onClick={()=>{
-             if (isDownvoted) return;
+          <button
+            className="text-md text-[#67727e]"
+            onClick={() => {
+              if (isDownvoted) return;
               else {
                 if (isUpvoted) {
                   setIsDownvoted(true);
@@ -61,8 +64,7 @@ const Comment = ({ comment, data }) => {
                   });
                 }
               }
-          }}
-
+            }}
           >
             <FaMinus />
           </button>
@@ -84,18 +86,38 @@ const Comment = ({ comment, data }) => {
                 {comment.createdAt}
               </p>
             </div>
-            <button className="text-[#5457b6] font-bold flex items-center gap-1 text-xl">
-              <FaReply /> Reply
-            </button>
+            <div>
+              {comment.user.username === "juliusomo" ? (
+                <div className="flex gap-4 items-center">
+                  <button className="flex items-center gap-1 cursor-pointer font-bold text-red-600 text-lg">
+                    <FaTrash className="" />
+                    Delete
+                  </button>
+                  <button className="flex items-center gap-1 cursor-pointer font-bold text-blue-900 text-lg">
+                    <FaPen className="" /> Edit
+                  </button>
+                </div>
+              ) : (
+                <button
+                  className="text-[#5457b6] font-bold flex items-center gap-1 text-xl"
+                  onClick={() => {
+                    setIsReply(!isReply);
+                  }}
+                >
+                  <FaReply /> Reply
+                </button>
+              )}
+            </div>
           </div>
           <h1 className="text-lg font-semibold text-[#67727e]">
             {comment?.content}
           </h1>
         </div>
       </div>
-      <div className="w-11/12 flex flex-col gap-3 border-l-2 border-gray-400 pl-4">
+      <div className="w-11/12 my-2 flex flex-col gap-3 border-l-2 border-gray-400 pl-4">
+        {isReply && <Create_Comment />}
         {comment.replies.length > 0 &&
-          comment.replies.map((reply,index) => {
+          comment.replies.map((reply, index) => {
             return <Reply reply={reply} key={index} comment={comment} />;
           })}
       </div>
