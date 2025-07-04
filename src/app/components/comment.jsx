@@ -95,8 +95,8 @@ const Comment = ({ comment, data }) => {
       </div>
       <div className="w-11/12 flex flex-col gap-3 border-l-2 border-gray-400 pl-4">
         {comment.replies.length > 0 &&
-          comment.replies.map((reply, index) => {
-            return <Reply reply={reply} key={index} />;
+          comment.replies.map((reply,index) => {
+            return <Reply reply={reply} key={index} comment={comment} />;
           })}
       </div>
     </div>

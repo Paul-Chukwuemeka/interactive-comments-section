@@ -2,16 +2,16 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Comment from "./components/comment";
+import Create_Comment from "./components/create_comment";
 
 export default function Home() {
   const [data, setData] = useState(null);
-
-
   useEffect(() => {
     async function fetchData() {
       try {
         const response = await axios.get("/data.json");
         setData(response.data);
+        
       } catch (error) {
         console.log(error);
       }
@@ -20,13 +20,14 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="w-full h-screen flex items-center justify-center">
+    <div className="w-full h-screen flex flex-col items-center gap-10  justify-center">
       <main className="w-full max-w-[800px] h-fit flex flex-col">
         {data?.comments?.map((comment, index) => {
           return (
             <Comment comment={comment} key={index} data={data}/>
           );
         })}
+        <Create_Comment currentUser={data && data.currentUser}  />
       </main>
     </div>
   );
