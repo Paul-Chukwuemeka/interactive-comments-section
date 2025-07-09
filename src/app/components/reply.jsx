@@ -1,17 +1,21 @@
 import React from "react";
-import { useState,useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Image from "next/image";
 import { FaPlus, FaMinus, FaReply, FaTrash, FaPen } from "react-icons/fa";
 import Create_Comment from "./create_comment";
+import { AppContext } from "../context";
 
 const Reply = ({ reply, comment }) => {
   const [isUpvoted, setIsUpvoted] = useState(false);
   const [isDownvoted, setIsDownvoted] = useState(false);
   const [isReply, setIsReply] = useState(false);
+  const {
+    setIsDelete,
+    setReplyToDelete,
+    setDeleteParent,
+    deleteParent
+  } = useContext(AppContext);
 
-useEffect(()=>{
-  console.log(isReply)
-},[isReply])
 
 
   return (
@@ -90,7 +94,14 @@ useEffect(()=>{
             <div>
               {reply.user.username === "juliusomo" ? (
                 <div className="flex gap-4 items-center">
-                  <button className="flex items-center gap-1 cursor-pointer font-bold text-red-600 text-lg">
+                  <button
+                    className="flex items-center gap-1 cursor-pointer font-bold text-red-600 text-lg"
+                    onClick={() => {
+                      setIsDelete(true);
+                      setReplyToDelete(reply);
+                      setDeleteParent(comment)
+                    }}
+                  >
                     <FaTrash className="" />
                     Delete
                   </button>

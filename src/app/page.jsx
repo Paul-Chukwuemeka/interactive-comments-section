@@ -1,13 +1,30 @@
 "use client";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Comment from "./components/comment";
 import Create_Comment from "./components/create_comment";
 import DeleteModal from "./components/Delete_Modal";
+import { AppContext } from "./context";
 
 export default function Home() {
-  const [data, setData] = useState(null);
-  const [isDelete, setIsDelete] = useState(true);
+  const { data, setData, deleteParent } = useContext(AppContext);
+  const { isDelete, setIsDelete } = useContext(AppContext);
+
+  useEffect(() => {
+    if (deleteParent) {
+      setData({
+        ...data,
+        comments: data.comments.map((comment) => {
+          if (comment.id == deleteParent.id) {
+            return deleteParent;
+          } else {
+            return comment;
+          }
+        }),
+      });
+    }
+  }, [deleteParent]);
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -29,7 +46,7 @@ export default function Home() {
         })}
         <Create_Comment currentUser={data && data.currentUser} />
       </main>
-      {isDelete && <DeleteModal setIsDelete={setIsDelete} />}
+      {isDelete && <DeleteModal />}
     </div>
   );
 }

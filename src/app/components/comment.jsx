@@ -12,7 +12,7 @@ const Comment = ({ comment, data }) => {
   return (
     <div className=" h-fit w-full flex flex-col items-end gap-3">
       <div className="flex items-center gap-3 bg-white p-4 rounded-md">
-        <div className="flex flex-col h-30 px-4  items-center  justify-between rounded-lg bg-[#c3c4ef6f] p-2">
+        <div className="flex flex-col h-30 px-4  items-center max-lg  justify-between rounded-lg bg-[#c3c4ef6f] p-2">
           <button
             className="text-md text-[#67727e]"
             // disabled ={isUpvoted} alternative for checking if is upvoted is true on button click

@@ -1,6 +1,13 @@
 import React from "react";
+import { useContext, useEffect } from "react";
+import { AppContext } from "../context";
 
-const DeleteModal = ({setIsDelete}) => {
+const DeleteModal = () => {
+  const { setIsDelete, replyToDelete, deleteParent, setDeleteParent } =
+    useContext(AppContext);
+
+
+
   return (
     <div className="absolute z-[10000] flex items-center justify-center bg-[#1a191920] top-0 left-0 h-screen w-screen">
       <div className="bg-white shadow-lg w-full max-w-[440px] p-6 flex flex-col gap-4 ">
@@ -10,8 +17,28 @@ const DeleteModal = ({setIsDelete}) => {
           comment and can't be undone.
         </p>
         <div className="flex justify-between gap-4 *:cursor-pointer *:w-1/2 *:text-lg *:font-medium *:text-white *:h-13 *:rounded-lg">
-          <button className="bg-gray-500" onClick={()=>{setIsDelete(false)}}>No,Cancel</button>
-          <button className="bg-[#ed6468]">Yes,Delete</button>
+          <button
+            className="bg-gray-500"
+            onClick={() => {
+              setIsDelete(false);
+            }}
+          >
+            No,Cancel
+          </button>
+          <button
+            className="bg-[#ed6468]"
+            onClick={() => {
+              setDeleteParent({
+                ...deleteParent,
+                replies: deleteParent.replies.filter(
+                  (reply) => reply.id !== replyToDelete.id
+                ),
+              });
+              setIsDelete(false);
+            }}
+          >
+            Yes,Delete
+          </button>
         </div>
       </div>
     </div>
