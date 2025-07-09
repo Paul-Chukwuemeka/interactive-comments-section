@@ -26,7 +26,7 @@ const Comment = ({ comment, data }) => {
                     if (comment.id === item.id) {
                       item.score += 2;
                     }
-                    console.log(comment.score);
+                    console.log(comment?.score);
                   });
                 } else {
                   setIsUpvoted(true);
@@ -41,7 +41,7 @@ const Comment = ({ comment, data }) => {
           >
             <FaPlus />
           </button>
-          <h1 className="text-xl text-[#5457b6] font-bold">{comment.score}</h1>
+          <h1 className="text-xl text-[#5457b6] font-bold">{comment?.score}</h1>
           <button
             className="text-md text-[#67727e]"
             onClick={() => {
@@ -80,14 +80,14 @@ const Comment = ({ comment, data }) => {
                 alt={comment?.user?.username || "user avatar"}
               />
               <p className="text-[#5457b6] font-bold text-lg">
-                {comment.user.username}
+                {comment?.user?.username}
               </p>
               <p className="text-[#67727e] font-semibold">
-                {comment.createdAt}
+                {comment?.createdAt}
               </p>
             </div>
             <div>
-              {comment.user.username === "juliusomo" ? (
+              {comment?.user?.username === "juliusomo" ? (
                 <div className="flex gap-4 items-center">
                   <button className="flex items-center gap-1 cursor-pointer font-bold text-red-600 text-lg">
                     <FaTrash className="" />
@@ -116,7 +116,7 @@ const Comment = ({ comment, data }) => {
       </div>
       <div className="w-11/12 my-2 flex flex-col gap-3 border-l-2 border-gray-400 pl-4">
         {isReply && <Create_Comment />}
-        {comment.replies.length > 0 &&
+        {comment?.replies?.length > 0 &&
           comment.replies.map((reply, index) => {
             return <Reply reply={reply} key={index} comment={comment} />;
           })}

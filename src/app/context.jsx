@@ -8,6 +8,7 @@ const ContextProvider = ({ children }) => {
   const [isDelete, setIsDelete] = useState(false);
   const [replyToDelete, setReplyToDelete] = useState(null);
   const [deleteParent, setDeleteParent] = useState(null);
+  const [addReplyParent,setAddReplyParent] = useState(null)
 
   return (
     <AppContext.Provider
@@ -19,7 +20,9 @@ const ContextProvider = ({ children }) => {
         replyToDelete,
         setReplyToDelete,
         deleteParent,
-        setDeleteParent
+        setDeleteParent,
+        addReplyParent,
+        setAddReplyParent
       }}
     >
       {children}
